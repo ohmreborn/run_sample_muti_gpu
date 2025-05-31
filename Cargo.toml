@@ -1,0 +1,11 @@
+[package]
+name = "run_sample_muti_gpu"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.98"
+candle-core = { path = "/mnt/candle/candle-core", features = ["cudnn"] }
+candle-nn = { path = "/mnt/candle/candle-nn", features = ["cuda"] }
+clap = { version = "4.5.39", features = ["derive"] }
+cudarc = { version = "0.13.5", features = ["std","nccl", "cublas", "cublaslt", "curand", "driver", "nvrtc", "f16", "cuda-version-from-build-system", "dynamic-linking"], default-features = false }
