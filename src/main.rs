@@ -111,7 +111,7 @@ fn main() -> Result<()> {
 //     let b = a.apply_op1_no_bwd(&all_reducee)?;
 //     println!("{}",b);
 
-    let batch_size:usize = 3;
+    let batch_size:usize = 20;
 
     // create a data
     let n_sample:f32 = 100.0;
