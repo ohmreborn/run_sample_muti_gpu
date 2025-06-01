@@ -131,8 +131,10 @@ fn main() -> Result<()> {
     let varmap: VarMap = VarMap::new();
     let vb = VarBuilder::from_varmap(&varmap, DType::F32, &device);
     let model: Linear = linear(1, 1, vb)?;
-    let mut vars:Vec<Var> = varmap.all_vars();
-	vars.sort_by_key(|v| v.id().get_id());
+    let vars: Vec<Var> = varmap.all_vars();
+    let mut vars_id: Vec<usize> = vars.iter().map(|v| v.id().get_id()).collect();
+    vars_id.sort();
+    println!("{:?}",vars_id);
 	let mut optimizer: SGD = SGD::new(vars.clone(), 0.01)?;
 
 	for var in vars.iter(){
@@ -149,20 +151,20 @@ fn main() -> Result<()> {
 	}
 
 	// training a model
-	for _epoch in 0..10 {
-		for (x_train,y_train) in &data_loader{
-			let pred: Tensor = model.forward(&x_train)?;
-			let loss_res: Tensor = loss::mse(&pred,&y_train)?;
-			optimizer.backward_step(&loss_res)?;
-
-			for var in vars.iter(){
-				let v = var.contiguous()?.apply_op1_no_bwd(&all_reducee)?;
-				var.set(&v)?;
-			}
-
-			println!("{}",loss_res);
-		}
-	}
+// 	for _epoch in 0..10 {
+// 		for (x_train,y_train) in &data_loader{
+// 			let pred: Tensor = model.forward(&x_train)?;
+// 			let loss_res: Tensor = loss::mse(&pred,&y_train)?;
+// 			optimizer.backward_step(&loss_res)?;
+// 
+// 			for var in vars.iter(){
+// 				let v = var.contiguous()?.apply_op1_no_bwd(&all_reducee)?;
+// 				var.set(&v)?;
+// 			}
+// 
+// 			println!("{}",loss_res);
+// 		}
+// 	}
 
     Ok(())
 }
